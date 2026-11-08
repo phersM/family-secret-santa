@@ -120,6 +120,9 @@ button.ghost{display:block;width:100%;font:inherit;font-weight:800;font-size:15p
 #wishes ul{list-style:none;margin:0;padding:0}
 #wishes li{padding:9px 0 9px 34px;position:relative;border-bottom:1px dotted #bcdcc9;font-size:17px;font-weight:700;opacity:0;animation:slide .5s both}
 #wishes li:last-child{border:0}
+#wishes li{overflow-wrap:anywhere}
+#wishes a.wlink{display:inline-block;margin:2px 0;padding:4px 11px;border-radius:999px;background:#fff;border:1.5px solid #2a9d68;color:#14693f;font-size:15px;font-weight:800;text-decoration:none}
+#wishes a.wlink:active{transform:scale(.96)}
 #wishes li:before{content:"🎁";position:absolute;left:0;top:7px;font-size:18px}
 @keyframes slide{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
 .ring{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin:8px 0 4px}
@@ -196,8 +199,8 @@ textarea:focus{border-color:var(--gold)}
 
   <div class="card hidden" id="wlCard">
     <h2>✨ <span id="wlWho"></span>, what would you love?</h2>
-    <p class="lead">One idea per line. Only your Secret Santa will see this.</p>
-    <textarea id="wlTxt" rows="7" placeholder="Gardening gloves&#10;Coffee beans&#10;A good novel"></textarea>
+    <p class="lead">One idea per line. You can paste a web link to show exactly what you mean. Only your Secret Santa will see this.</p>
+    <textarea id="wlTxt" rows="7" placeholder="Gardening gloves&#10;Coffee beans https://www.example.com/coffee&#10;A good novel"></textarea>
     <button class="main" id="wlCopy">📋 Copy my wishlist</button>
     <div class="note" style="margin:10px 0 0;text-align:center" id="wlHelp">Then paste it in a message to <span id="orgAddr">the organiser</span>.</div>
     <a class="btn hidden" id="wlMail" href="#" style="margin-top:12px">📧 Send by email</a>
@@ -240,7 +243,7 @@ textarea:focus{border-color:var(--gold)}
   <button class="main" id="gotit">Got it, thanks</button>
 </div></div>
 <script>
-var CFG={"event": "Family Secret Santa", "budA": "$100", "budK": "", "date": "Christmas Day or Boxing Day", "organiser": "", "style": "Thoughtful, decent gifts", "wishlist": false, "iter": 200000, "people": [{"id": "A0", "g": "A", "n": "Josh", "s": "o5at7lJjP4f9fr6erCcLgQ==", "i": "6uKxKLlGzD7ZPMBk", "c": "N5a/pzDuALThAOdm4WKsCJVdc1zXmOqdS6rns1hy0S+biUl8cEw93ls=", "s2": "NbNBADRqh4uRfjYktrCFUw==", "i2": "iBDpArz1e6JD1+4b", "c2": "iPx91K8k/cFwInbr6SJSpBIl"}, {"id": "A1", "g": "A", "n": "Abbey", "s": "taHHmY6poRLdMAlxu03Dcw==", "i": "lCVVnoOerHeyoFPu", "c": "/FvvFuXQDgBmqJ7A2XfmmRP4T3nhdO6a+b2mMPwEY7Pkquli5INw", "s2": "jmxwRJjcrZLTUznlr+68hg==", "i2": "s15r+t/aAlFdy2Dl", "c2": "ilrKkdSOTlgb443aMhOTmlgV"}, {"id": "A2", "g": "A", "n": "Catherine", "s": "G/Z/A+zXzhpKK9kTMGLpfw==", "i": "FzDtaZMKBh3YOFj8", "c": "rBjhx62/S5ffXjeed7XIguRbArLeVznE4dmzDLIABtqiVRv7DN8o", "s2": "OkfAzZP3MLsikGLeZ6u2IA==", "i2": "xec2/dxH/s6Qkaa7", "c2": "gWXPXOC2Vt/y0iCKG4Thwx/z"}, {"id": "A3", "g": "A", "n": "Bridget", "s": "RBBkKEBx3X/sshy8lZNQqA==", "i": "W4VMG+EJbxoDjmEL", "c": "uQELYZqDV2l5yOqo/G+F+tTgbXocuudnUen0geKMYUk8ZkisDzA=", "s2": "KU3jRVwRAbmF2FGXyIkblA==", "i2": "qGPpJbIj/c38M5LD", "c2": "px73eVD3XdR5uZ4PXJvEVYtd"}, {"id": "A4", "g": "A", "n": "Paul", "s": "gqnSUzYfwqHTJaXOefEYug==", "i": "s+1arP15uE0jWXMp", "c": "5xiureRVLoLBP1s3Xssg7kx8r56ObG/e6XjjYopc4kFZf1IoxHA=", "s2": "MclXXWqy37XnzK/bKRP/PQ==", "i2": "01Dq87Pdb6p13Z+l", "c2": "Xz8DdRDV+/5CFFrSk3O5x7Zx"}, {"id": "A5", "g": "A", "n": "Erica", "s": "6lRGm2DFdhWsmdRR3A0vhA==", "i": "Smbe6yWFrip52rcg", "c": "wSVWgzemCIW0PKNwmEpLMFGbw+0neHXZDUSDktF1fk76/TEAgI8M", "s2": "+VzcJgcNcpwskUX5FlefRw==", "i2": "BStlU7VFuX1uSGzs", "c2": "iN1ziCbuWuuYH/zXy3I+7pKB"}, {"id": "A6", "g": "A", "n": "Hayllie", "s": "a7RDwJ16o9bMokbNO8gFPw==", "i": "Em7h8SqimMkDBe+J", "c": "sr6i2h+miR2nqCkgsemtLBs3rhUgIoacu4mHTGAHEe58H5cUpS0V", "s2": "UK6Ea7jqOMyFUdyBZicDZw==", "i2": "t44x934erFMJRzld", "c2": "MQv97SM94WeeAwvRmJRsOYbR"}, {"id": "A7", "g": "A", "n": "Ben", "s": "1SVfONAyuJ8uMMPW9BNPcw==", "i": "NkqZhZIW/1TXxycN", "c": "JWWgFeqTeINvaM0q+ywfYOI3C2RXQ91B5SCTXh9B3m/rNL6HzhI=", "s2": "tFm6usD5fws8gg9Ypx8TFg==", "i2": "0hbQj4WXZeziAg10", "c2": "luErtcGZT3FSwTMvhYH8TSTM"}, {"id": "A8", "g": "A", "n": "Mark", "s": "wKCxllzaimdEbH82tmiXjw==", "i": "tWzmsF1U66jIJLg2", "c": "ZDpuP4j+J5mwyAaV4ijr6yamqeQGwW5jgam2dHe1tR6rLjO8b1Pcg/3Inl3Q", "s2": "YozDyxaidhJFT8rimOtXIg==", "i2": "c2F9xqwMV63Pf70K", "c2": "L8jB5zhO7/eiU6iQ2rBtRw8m"}, {"id": "A9", "g": "A", "n": "Yoshi", "s": "nsGbtzcjKML6b/wqoE1JoQ==", "i": "84Ftp5MxhIQsFwiF", "c": "itAQTeFYdKRKumghcSd29lCw1zBq3YENUEv4274crOM2yXQ9SO2qKoM=", "s2": "ns2KsvnzOvQXCPZrKCZTrQ==", "i2": "Bu5acOFkbzDD+BcA", "c2": "WJ4l34jZiJGa++UCHXifQlbm"}, {"id": "A10", "g": "A", "n": "Christopher", "s": "sRurw0BuncQIyVYn524uTQ==", "i": "pHenvOe45yJG22S0", "c": "CyzcnIm/0vMe3MsLJ8eMaIhSwHyDS9a1aJEjs1HSWD7kJn7qSCry6lo=", "s2": "99/3wrbLkFGXxg6ftf5dHQ==", "i2": "glsm7v6SYqQ0Aqt9", "c2": "mOidIkcQgO443LbamlVBhB+/"}, {"id": "A11", "g": "A", "n": "Riley", "s": "yMGmRt6hjLeOExUgCWDx9g==", "i": "cWnoBJL1i6ELGphO", "c": "XhvaeeISyiD1iCW+SlueTLpBep46KIb44rIVaYT1iELXgt8qC/gH5fgy8Q==", "s2": "sYTQmKA+kJagwfwea2tthA==", "i2": "850sWmWiiRPtLsMv", "c2": "vTAFgW8AsR6f12ZDOWAsQwpr"}, {"id": "A12", "g": "A", "n": "Phoenix", "s": "SpSIMIcoQFNjokO5X062+w==", "i": "aTmHpNOpMtWqCIbl", "c": "sLvaK4spg/iDd3tG7HpRzfTvV//EuetxwfAYoOpSqs1T+zRFnQ==", "s2": "V152F3xh6LVl/ZregvKl0Q==", "i2": "5LpWtykCGBQBw/19", "c2": "NAfv5GB+G+J7Zr+gonh999w1"}]};
+var CFG={"event": "Family Secret Santa", "budA": "$100", "budK": "", "date": "Christmas Day or Boxing Day", "organiser": "", "style": "Thoughtful, decent gifts", "wishlist": true, "iter": 200000, "people": [{"id": "A0", "g": "A", "n": "Josh", "s": "8z3v2FvIxFSZG7yhP52WmQ==", "i": "dD3Hiu+B+8Eiaf8K", "c": "MdHc3wZdaje3xCRLCLHhhMtNMYXjJM06FwTOuoZ63xW8mUxdupUge5OZCx6kV+HlU7E2amu+H+T50Qo9eTfcm0QWTsg3JzuyMNB6ktRjUFr4+0uDfpE5rX0fRaNkGo+Fds8S+jZ4TwjkeNwrT058T1fZQOPC1K87fU2yKWshYw==", "s2": "lc4GUafRtUXARTwcMz/kCA==", "i2": "r/ihyDI1INmumIts", "c2": "g5SoYIT0rQ+dHLy0CtSziwfnrp3E0Hm1jhz99RW5R9H1J8uQKYquYowijcpFX2uS2hw6GYOcg6S9gweJjQ8+1xW9gg9zpj+21H5AdYmGPcesM5NwhxLhMvmfPDotAiyasxHkGdMqu+RfIHtEgFwaP3519YF9Am/yEaKgycyLV3Mlsh4qCNxThuIk9keev+y9wSgZ6m1G+NO5aQj+8ZPGXz69WBTg0YYl6XGtPgy/N+ff4tLgo09+fg=="}, {"id": "A1", "g": "A", "n": "Abbey", "s": "1bd0hhYspb/PDyNlho8StA==", "i": "G8AQD3JbPCq1/PGe", "c": "5kMZy18Xnpik7kmpRdD1ORjhsOF8snxPsv51rdoG35hYtS/uneFAvcE5Ceotgtj5NpFnuZ5bqP+Q59CxS0Sztx9lQdv91TARh/rtsUFe6bV2Gj2BnOj1uh5MMBLhZAGVH3h6LwPfnRFUGC4XgccW0u/0jNHTgvh26FmjSwc=", "s2": "tkOc5940PMjvaV1mvNnCOA==", "i2": "dlEwgHhs2RkrzrSU", "c2": "fGmCambVoLpGCsZcNdlh+45o2IKUCgDZU/28USi7XTFR7nfUvlnX/5AKFvarCeM8MHq7jZ6iCnz5F/LrkM7ZdlC1xqegufeh7Toe+AHU5ZKm/GUQL1BOr/0EGLcfFdDvM5uuGDuvdWi4ioSw/4XRYtbgUzgQurLWBK/tCdksrs27iSRMlR7W1jmNnD7a9Lf4aCjTfWFMzl9agoyhRSVcicxHW1v0nFdfog1omd9ks+n070CX17+3jw=="}, {"id": "A2", "g": "A", "n": "Catherine", "s": "Z4MtnicC3SX3fh2TtyX5QQ==", "i": "rZ6m5hwZv8V85Lrw", "c": "KjPoAKXnF4sqtbJwsPncrcyfzCTRPCCy0DHFb2xI69iJORpaSGpYptKCZjYUx+d5R79oLlHe8wkORcM/CT6NHYirroGwVEncSjAjZgQ82wrOKkDc59oosoQPGTRwBbu9tyMShibdxQMFA57R7/YJai2q4fwJicOQtKrNkg4=", "s2": "4JjwoI6GYI79RXVZLoIlSQ==", "i2": "s0nli33Tgltf8ocm", "c2": "noOe6pHPQUdqPoSIdF67ALbywN/l7jH4L4b5tKzYxLrLBQBqQzz5PEK3yVvRyWOX4kAmJWkuxfIJ/6t4gRAJYQP95TG6eB5+Ghx6nFTONhfGCewqkXjetDnLxPeQtKnro78Vf4Ncty87/BsTmIb/c1C67BO9kBkxlESWOJV0y4xXaTSMTmnedFxrdJ1PGMxqLaoi4A0VmaKkINW88uWKMBMCBH7SjK1YFWIy+Nc6snjyjlYbW0GzkQ=="}, {"id": "A3", "g": "A", "n": "Bridget", "s": "5x5bVPrPcW7EvJLPy612Nw==", "i": "SGUc6jWlMBUeN08W", "c": "HIsiJZ1spe0aXdnwVhura6Gdg+dvL3Q/SqHwpsY28zL8XjXTtqlvSvvgPk5qII/2uMMksEJDbVZ7d7/CD4Uqs9IJVjix9yAtttMKoIUnDtVaeWj2v/MyiFiTwD664k1bzd9OwSA6eXf4acsJVcvnTmo2ucCc4O15JgaxFA==", "s2": "/x5af2q6rV1PIYLcHEzZ3A==", "i2": "EuLPP7GyxKr0deAa", "c2": "EZI5LWuqNMQBUlLrU8Mf/rAl2cABoETUwD9dKAgkQnfqkQFLY//uLNACO8n2jZyVZOUewGjk6HPuVovTJwYC9PRJBCKARu0Qcja5JWoqAzAa8Mcf8ulQJIrd+VZS2zWvmtemKGGmatHr0kteDIDmzv4Rgb7hpIVZpWI4PYLPnEZcPuXJFEaCSzHuxSkiD89BrphHe7t4FkJ/f1YJjY36i9kynkCB9gWmwcaxsw1CyDxl/gbf5ALqVg=="}, {"id": "A4", "g": "A", "n": "Paul", "s": "DhQYZMAz9ChaTpK9mL9LSA==", "i": "s5y2BH2yM2oSNoqf", "c": "ij28oI6ln9OJwWNlASZ711Z4s58R42OAbZsup+098C4RF0y32xYHP0NMmCddpMZOGanGOIc3ErDewxDIX0zgCGWnngofa3oppI1A5x1f25d4eXfxvC74jKpaGqns4UtBHSqdhe7Sxc9KUVtsWv97/FxphEvsL4iEs6TYvQ==", "s2": "SYMDhQShj11TudKNUVsUwg==", "i2": "OKqy9Bc+Y5Gy8oB0", "c2": "wOf0F1U7AB+83wJQ69DEZZ5bshakX3muElBYDbn2k23U55r0XwE9oL4fbumH/KzEsqxd0qG4wM4ugfGEjGGc1tMBsO2H2IbT9COOY7C+atoIhN34mVPEzVcqqONfk6sP0ClTB76y4MMGgnxZ6BINLkehmtGJeWGK0se85rDwbk6ENt9UEHVdl/Vr2rYFzKqZS/Gk+fFv/UtEwBHcqW2OTJ6uaOJmpYhovoej5S242jEEcOz/1Om1Ng=="}, {"id": "A5", "g": "A", "n": "Erica", "s": "p4RtVbsVr9rGvnfhEtByzA==", "i": "TLkehF5D1BEP9NbY", "c": "4dxWtj1YQsKLBzeWx4+Aa6yWC5xJq8/Yq53c1guUknf0L+zQJrVwv3p0HeR5rPHnJfbiZFZNL/6qbIuFQRx1Scm6+d+414XOl7SGG67acDN40GIfPaePVjsiu100ZhBROTfWD+wfEJH/GQEqIzRi2ZuHfOoTxUvkwSkSs9Y=", "s2": "T7QkX5IfTZDuCuZpTiEUDw==", "i2": "2X3AenujmrhMboQ2", "c2": "MyGhVehw7MVmuCmqIcq2D0aD7ML/JcxUvc1JOMtO722Q8DsO5sSCcwdpPEKe53N/uZZ63LUziWdtTCRa9GFGQ+Fg53/HfGgNohgWKHqbuqH+NDJ8BRvmd8MxKX+EpJxPwNS7qRpBh/3esUvxV3qrHzixaWhyskNY0NjxDmJTntR1GRn6OPb7CiLKeq8T1CYhPWIo/35rxvF9oykwFnHC+OQlTWxK8lh0dqPV0OPeUGuYUxAekWl24w=="}, {"id": "A6", "g": "A", "n": "Hayllie", "s": "Na1T8xI8tSXRxxzImkUxyg==", "i": "NJt2JmFm9vOG1gbn", "c": "rP3pc00qL6QCPEB7KeQihAhFhWJiRQw87i4buA21/i/0SHuiFoKTsPHqVIU7OsTPhji9IZQxmwaZATzYaWFKkcIrdUiiF1f7B6ivtBHL6wuWiqngsx3H3eLOjnZeIUhIDNts3Z2WNSlptYBIZLRH3vXiswP/cbAPKG6GqDY=", "s2": "Y5O6LSlB2aCDjeZgGyRbrA==", "i2": "Fiz/OM4u0ui1FjU5", "c2": "nf9o5hxO8j3QpolE2H48BdoV1KGnJnfkymA9AFmvj0YK5I9M+RVsWhpamXIwgLkxgH+InzY+qXG1U0Wqa2FNevK8xZkpWM25imSanTOjBPO2ZBlwSHlObFj5uJ2T6dhwcFT6hNtyvWZsouJzKqF7vuLxLGIak6W8Sjnr7KKdT5BEZ/qZANhOKRhWihRs/WSfAy1RH2t8mlbSc6f4CRP9YgMjFxE2aKqj5LQOtyn0X0tVtdaZk585VA=="}, {"id": "A7", "g": "A", "n": "Ben", "s": "utzFiRbXkIVgD/dFJP1WyA==", "i": "nhqErkjg6s8sIBFx", "c": "BfENjTuFHpv8Xmz6YEX7QJqobaWS96jL/io+ptwaOH35hCWXqg2SIvWf2BDLUM6Kt/2aEGcWlmCv0BmyOJnvwSVymuZOLoytfElRacOslexTzwT9Ow25cdkqjXm1ak73BKRwd9a6zL3ulSG53/2mfIGa2Nvkh9K8yKLIXg==", "s2": "2DVbjs55aJFt3naxoZmI7A==", "i2": "glwYGbjqXf4kT1Qv", "c2": "6u3MJksJ2ytxMS2Dh64trsLE9grL0iCXy9vQn387vxfJa7HePGfNm1+mFHqbdcupHnPiglngnzxbcN4cdgixswRFHzWGROagMbesnTTliOLy98DkAwhLpozmS02MG/ySXsufY0yhjRe7gB14KiGHfVU6wC4oHCD2o6dkjAuNVd81ysCHBNSTQEuQvuXHUVqkb5pIG+soNqb7iOgI6KeZzZ/d9tLcPe7+22DdPkDP8tCYUfruPl3e8A=="}, {"id": "A8", "g": "A", "n": "Mark", "s": "iN4JAOtjx0OS3eEQ6M0VcQ==", "i": "ZynkCGlInwv3q7W8", "c": "yVVzdh5QsOXbsyQ3+fRwBWV4dK+U5xQc4ZPVFSObpWg2R7U9GvUZNA8XSOtuYzXz8BpCWgim6ClrKpNPoz8WzfjOj2fndTcIUTBNQEc8UbEKMRs5L0UkK9i4eCotYFQbYezUqRoGpQ94y4TKvfkb0bXHAH3h0gYIUc+40m0k28sbDJU=", "s2": "oLyHDJFmoblPCRl+O3mS3A==", "i2": "n+symZyGvie/jVKP", "c2": "+oaM3y2v9VvIUNXatDGrSJC+sMTuJ7H/uvmK4o012lxaVYm9lSUzN+/DKn4BMYtIfGcBZpBsCaMjzw8MiXpoAtboWszQvgm2zYfo7AlTg6cDTAw5jjy70+BzpejT1IkXxLur5Dt4NAq8aVDf9p9IldcSmmtJhXx8uMlfzNIDLZSj7rZT1JDpS8CtH++CiBFqvSdMuVQU3ppTBw+fY3JO0eszcY/lQLz0qYqhtkz9s6Uy7BUKVcAWYA=="}, {"id": "A9", "g": "A", "n": "Yoshi", "s": "XoHWBrzRe1F+FtU/vDMCXA==", "i": "dd1ZCsxQ4LH1JJul", "c": "1ixJ8r609Os/k3ySa5XvdbLQs5efTNFbN0QL6RYK9lTKOJ2qGG+vxPjCsE5hPir0WQCbugo9Ya4I/9ELYx2qMfuYVADpK1JAXWhZf5B0g79ZwZwo3wTOoe+9GNL1Hcvd0MTuzjFSNs1Uom1DjVDNuQql+fKw8PLPMXJrSmqPDw==", "s2": "XtYF+zyfJVIXJPYQZYrIsg==", "i2": "IhKQRRydQwL5vo7p", "c2": "Mwql3GY9JElSM2uePRNJN3/jtWCsGa5eh8e/59VRBAf0QKL75fDEkXzadG3yuabqKYW4zAyiPaUmHznfThEh5jRtkDAQjFFkQ7YFMfDh79CDbK+CKTdwLQlR5pAt5LJ0CPvNVoTXkCAcF6wI3JVWepHbGc5SyX16l5dMWiWuooeJ1ww7QQFIxVKXUUUQrzPsExHRm41LBdFWQ5J0ZpI6QOBsI8pypGlerc3XbXc9+YDZqiEUrJSAWg=="}, {"id": "A10", "g": "A", "n": "Christopher", "s": "fCgPScb4wz7LCAwyju9yxw==", "i": "oN9SUDYDhpv7kdgp", "c": "aH7qBLIw9aZW94A6WvFhDUHPjauF6VzGDrpLkA+m/5tkU43Kf/d/fEoq6I+o04VLIp+2YHGhDLmufFxgpgL+GTG1tMU/2skthVTLGDdR7WA5u13XtWHLJ+XoHEo3tyKvfYmDtdnKkMTwa9de3/LR1xTEGzCsgIFaWx+HAWpYmQ==", "s2": "oZUR3zrv0wao0TeKZip1ew==", "i2": "evpglTVLzyHHaA4t", "c2": "FjrScRgHXiVZ3jcdqEs3YFKMlbeaEFYBJ8miYCph/a6w5ChI1lEfpe6FF3TKvS5ACWKjl8H7JNmnimm9kS//8O1yh+vGaBHpwTHOO96nXQ1dnTTv+cRICgA/wsn1b2Ll3cddGWptgipDeTYNFSxQS/l/GNMy7qKKr4CvDFRgqHL9Qjs3PbyOl9pPW+grh3TGWI4f8JB99MkJcbJ8FeILgK0QoUq9jCUjWuyQLJc2RQOjy+0DFt/3fw=="}, {"id": "A11", "g": "A", "n": "Riley", "s": "L+7lUi6vPqrlmNJIrSGkzw==", "i": "QQBnRiXFfjVywApV", "c": "8dzJx0t4J3QxbcjB2K2tL4s4M4cK3ZBYKKjJNeoBZ467JzdYInFJxRMLMstEsg3SEcIzvY3+ABbUPmBCgI8b7bQQWMpuoLtxorPMuKikZi9oS/4/Zym84IY7alnNQdWM9OF2p7Ai482oLUsVjsSuCupoX0SwaaLPj6tYXPGV6d7J", "s2": "YG5WOHPczho+3KdAS4lK6w==", "i2": "aGVo5eQ7pUggQs0F", "c2": "4u2eymQr/8NPjNmmRxFEYzrEhWwlhMAT3Eulp349jpVyCsOkd4F94Zz6UtaUEp+6/AW7Hb/DQnlhpCkNko38QEN6qlbdiQZMVmw6rwuEHhDunWYUOlcCn78m0W4LPumqUrnhNJUgkK7um8cmVhe/64gDJM956cF3gIwCq21lL/a9ll1ANlba/Q6xMX20oYHG7qZK2jat5agFzLaMN9BhA3Hh2guK3Y9wjbVjk7W7H7yjI5WP1/Mo0A=="}, {"id": "A12", "g": "A", "n": "Phoenix", "s": "DBDlUaSIl/wtCHZ/JHvDaQ==", "i": "xM7ZWLGx6YvBHX8a", "c": "/bXX2ufEGj6oG/nXpnZ40hSCi+LVVyUpv/UwHzJ9srynSvOVeyWc6Xzi3Rjz7a5ea9Y+JlWDU5scawAceyjCdJn/mOHo3x/SejJnvXyO53WnYWgn80XTANLJN+NOpttewjyCkJkl7MQlj2Hjyzv7nh1ohnoY65HgQwH0", "s2": "wWbGPpXktrKGkMWOCD70mg==", "i2": "lhyrq/50x2v7W/+G", "c2": "HRq+p6/4ZyKmD/jvDEy6S9DytQO3aBKCs0hg088JSAViqLafs5BqKmvbAUBxoqtmT25TwtjZ1wWyynwVanYh8yU4smgODwVz55GtIczz1FregHs5BbC9Ltfh23mL2HkszrCDdWfhMC+p2k9lBSENOPklzlGQYJOSxtPHHT8W7MO55Z/vqDoNWOEpWK278FXE8maippgrnSFBKBSxf/cWV+/+KMhddxCHdYirwiIStETE4a3wTONifA=="}], "supa": {"url": "https://srluzduwutwvkfyqxgkv.supabase.co", "key": "sb_publishable_kGs5dmThCZ6gldkolMBJVQ_YPxjbUv-"}};
 function $(id){return document.getElementById(id)}
 $('evName').textContent=CFG.event;document.title=CFG.event;
 var hasCrypto=!!(window.crypto&&window.crypto.subtle);
@@ -360,16 +363,12 @@ $('go').onclick=function(){
     var obj=JSON.parse(txt);
     var m=$('match');m.innerHTML='';
     obj.n.split('').forEach(function(ch,i){var s=document.createElement('span');s.className='ch';s.textContent=ch;s.style.animationDelay=(1.75+i*0.09)+'s';if(ch===' ')s.style.display='inline';m.appendChild(s);});
-    var wl=$('wishes');wl.innerHTML='';
-    var h=document.createElement('div');h.className='h';
-    if(obj.w&&obj.w.length){
-      h.textContent='✨ Things '+obj.n.split(' ')[0]+' would love';wl.appendChild(h);
-      var ul=document.createElement('ul');
-      obj.w.forEach(function(x,i){var li=document.createElement('li');li.textContent=x;li.style.animationDelay=(2.7+i*0.18)+'s';ul.appendChild(li);});
-      wl.appendChild(ul);
-    }else{
-      h.textContent='No wishlist yet';wl.appendChild(h);
-      var t=document.createElement('div');t.className='note';t.textContent='Ask around for ideas, but keep your cover.';wl.appendChild(t);
+    var renderFor=obj;
+    renderWishes(obj.n,obj.w,(SUPA&&obj.r)?'Checking for their wishlist…':null);
+    if(SUPA&&obj.r&&obj.k){
+      getRow(obj.r).then(function(ct){return ct?openWishes(obj.k,ct):null;}).then(function(list){
+        if($('match').textContent)renderWishes(obj.n,(list&&list.length)?list:obj.w,null);
+      }).catch(function(){if($('match').textContent)renderWishes(obj.n,obj.w,'Could not load their wishlist just now. Close and try again in a minute.');});
     }
     var f=$('facts');f.innerHTML='';
     var bud=c.p.g==='A'?CFG.budA:CFG.budK;
@@ -385,32 +384,97 @@ $('go').onclick=function(){
   });
 };
 
-// wishlist
-function wlMsg(){
-  var lines=$('wlTxt').value.split('\n').map(function(s){return s.trim()}).filter(Boolean).slice(0,15);
-  return 'WISHLIST: '+$('wlWho').textContent+' | '+lines.join('; ');
+// wishlist storage (Supabase holds only scrambled text)
+var SUPA=(CFG.supa&&CFG.supa.url&&CFG.supa.key)?CFG.supa:null;
+var own=null;
+function enc64(a){var s='';for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s);}
+function wkey(k){return crypto.subtle.importKey('raw',b64(k),'AES-GCM',false,['encrypt','decrypt']);}
+function sealWishes(k,list){
+  var iv=crypto.getRandomValues(new Uint8Array(12));
+  return wkey(k).then(function(key){return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(JSON.stringify(list)));})
+  .then(function(ct){var o=new Uint8Array(12+ct.byteLength);o.set(iv,0);o.set(new Uint8Array(ct),12);return enc64(o);});
 }
+function openWishes(k,ct64){
+  var raw=b64(ct64);
+  return wkey(k).then(function(key){return crypto.subtle.decrypt({name:'AES-GCM',iv:raw.subarray(0,12)},key,raw.subarray(12));})
+  .then(function(pt){return JSON.parse(new TextDecoder().decode(pt));});
+}
+function sHeaders(extra){var h={apikey:SUPA.key};if(SUPA.key.indexOf('eyJ')===0)h.Authorization='Bearer '+SUPA.key;for(var x in extra)h[x]=extra[x];return h;}
+function rpc(fn,body){
+  return fetch(SUPA.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:sHeaders({'Content-Type':'application/json'}),body:JSON.stringify(body)})
+  .then(function(r){if(!r.ok)throw new Error(fn);return r.json();});
+}
+function getRow(rid){return rpc('get_wish',{p_id:rid});}
+function putRow(rid,tok,ct){return rpc('save_wish',{p_id:rid,p_tok:tok,p_ct:ct}).then(function(ok){if(ok!==true)throw new Error('refused');});}
+function cleanWishes(txt){return txt.split('\n').map(function(s){return s.trim().slice(0,300)}).filter(Boolean).slice(0,12);}
+// turn pasted web addresses into tappable links (http, https and www only)
+var URL_RE=/(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)/gi;
+function linkify(el,text){
+  var last=0,m;URL_RE.lastIndex=0;
+  while((m=URL_RE.exec(text))){
+    var raw=m[0].replace(/[.,!?;:)\]]+$/,'');
+    if(m.index>last)el.appendChild(document.createTextNode(text.slice(last,m.index)));
+    var href=/^www\./i.test(raw)?'https://'+raw:raw,host=raw;
+    try{host=new URL(href).hostname.replace(/^www\./,'')}catch(e){}
+    var a=document.createElement('a');a.href=href;a.target='_blank';a.rel='noopener noreferrer';a.className='wlink';a.textContent='🔗 '+host;
+    el.appendChild(a);last=m.index+raw.length;URL_RE.lastIndex=last;
+  }
+  if(last<text.length)el.appendChild(document.createTextNode(text.slice(last)));
+}
+function renderWishes(name,list,msg){
+  var wl=$('wishes');wl.innerHTML='';
+  var h=document.createElement('div');h.className='h';
+  if(list&&list.length){
+    h.textContent='✨ Things '+name.split(' ')[0]+' would love';wl.appendChild(h);
+    var ul=document.createElement('ul');
+    list.forEach(function(x,i){var li=document.createElement('li');linkify(li,x);li.style.animationDelay=(msg===null||msg===undefined?(2.7+i*0.18):(i*0.12))+'s';ul.appendChild(li);});
+    wl.appendChild(ul);
+  }else if(msg){
+    h.textContent=msg;wl.appendChild(h);
+  }else{
+    h.textContent='No wishlist yet';wl.appendChild(h);
+    var t=document.createElement('div');t.className='note';t.textContent='Ask around for ideas, but keep your cover.';wl.appendChild(t);
+  }
+}
+
+// own wishlist form
+function wlMsg(){return 'WISHLIST: '+$('wlWho').textContent+' | '+cleanWishes($('wlTxt').value).join('; ');}
 function wlUpdate(){
-  if(CFG.organiser){
+  if(CFG.organiser&&!SUPA){
     $('wlMail').href='mailto:'+encodeURIComponent(CFG.organiser)+'?subject='+encodeURIComponent('Secret Santa wishlist')+'&body='+encodeURIComponent(wlMsg());
     $('wlMail').classList.remove('hidden');$('orgAddr').textContent=CFG.organiser;
   }
 }
-$('wlTxt').oninput=wlUpdate;
+var WL_LABEL=SUPA?'💾 Save my wishlist':'📋 Copy my wishlist';
+$('wlCopy').textContent=WL_LABEL;
+if(SUPA){$('wlHelp').textContent='Saved privately. Only your Secret Santa can read it, and they will not know it is you.';}
+$('wlTxt').oninput=function(){wlUpdate();$('wlCopy').textContent=WL_LABEL;};
 $('wlBtn').onclick=function(){
   var c=check();if(!c)return;
   decrypt(c.p,c.pin,'2').then(function(txt){
-    $('wlWho').textContent=c.p.n;$('wlTxt').value=JSON.parse(txt).join('\n');wlUpdate();
+    var o=JSON.parse(txt);own={k:o.k,r:o.r,t:o.t};
+    $('wlWho').textContent=c.p.n;$('wlTxt').value=(o.w||[]).join('\n');wlUpdate();
     $('entry').classList.add('hidden');$('wlCard').classList.remove('hidden');window.scrollTo(0,0);
+    if(SUPA&&own.r){getRow(own.r).then(function(ct){return ct?openWishes(own.k,ct):null;}).then(function(list){if(list&&!$('wlTxt').value)$('wlTxt').value=list.join('\n');}).catch(function(){});}
   }).catch(bad);
 };
-$('wlBack').onclick=function(){$('wlCard').classList.add('hidden');$('entry').classList.remove('hidden');$('wlCopy').textContent='📋 Copy my wishlist';};
+$('wlBack').onclick=function(){$('wlCard').classList.add('hidden');$('entry').classList.remove('hidden');$('wlCopy').textContent=WL_LABEL;own=null;$('wlTxt').value='';$('pin').value='';paint();};
 $('wlCopy').onclick=function(){
-  var m=wlMsg(),btn=$('wlCopy');
+  var btn=$('wlCopy');
+  if(SUPA){
+    if(!own){return;}
+    btn.disabled=true;btn.textContent='Saving…';
+    sealWishes(own.k,cleanWishes($('wlTxt').value)).then(function(ct){return putRow(own.r,own.t,ct);})
+    .then(function(){btn.textContent='✅ Saved! Your Secret Santa can see it';btn.disabled=false;})
+    .catch(function(){btn.textContent='⚠️ Could not save. Tap to try again';btn.disabled=false;});
+    return;
+  }
+  var m=wlMsg();
   function done(){btn.textContent='✅ Copied! Now paste it in a message'}
   function fb(){var ta=$('wlTxt');ta.value=m;ta.focus();ta.select();try{document.execCommand('copy');done()}catch(e){btn.textContent='Select the text above and copy it'}}
   try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(done,fb);else fb();}catch(e){fb()}
 };
+if(SUPA){var hl=document.querySelector('.helplist'),li=document.createElement('li');li.innerHTML='<div class="ic">✏️</div><div><b>My own wishlist</b><span class="t">Type your PIN, then tap Add or edit my wishlist. Write a few ideas and save. Only your Secret Santa will see them.</span></div>';hl.insertBefore(li,hl.children[4]);}
 
 if(!CFG.people.some(function(p){return p.g==='K'})){$('howFirst').textContent='Everyone draws one person from the family list. Partners never draw each other.';$('howKids').remove();}
 
@@ -422,7 +486,7 @@ if(!CFG.people.some(function(p){return p.g==='K'})){$('howFirst').textContent='E
   function shut(){sh.classList.add('hidden');}
   $('helpBtn').onclick=open;$('shut').onclick=shut;$('gotit').onclick=shut;$('sheetbg').onclick=shut;
 })();
-if(CFG.wishlist===false)$('wlBtn').classList.add('hidden');
+if(!SUPA)$('wlBtn').classList.add('hidden');
 // snow (3 depth layers)
 (function(){
   var c=$('snow'),x=c.getContext('2d'),w=0,h=0,fl=[],dpr=Math.min(window.devicePixelRatio||1,2);
