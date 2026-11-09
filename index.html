@@ -68,7 +68,39 @@ h2{font-family:var(--serif);font-size:21px;margin:0 0 4px;color:var(--pine2)}
 .chip.sel{background:linear-gradient(180deg,#2a9d68,#14693f);border-color:#14693f;color:#fff;transform:scale(1.07);box-shadow:0 8px 18px #14693f55}
 @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
 #pinSec{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s,opacity .5s}
-#pinSec.show{max-height:340px;opacity:1}
+#pinSec.show{max-height:560px;opacity:1}
+.or{display:flex;align-items:center;gap:10px;margin:16px 0 14px;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+.or:before,.or:after{content:"";flex:1;height:4px;border-radius:4px;background:repeating-linear-gradient(135deg,var(--red) 0 7px,#fff 7px 14px);opacity:.55}
+/* the wishlist button is a wrapped green present: gold ribbon, bow on top */
+button.wish{position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:#fff;cursor:pointer;
+ padding:22px 18px 18px 64px;border:0;border-radius:18px;overflow:visible;
+ background:linear-gradient(90deg,transparent 30px,var(--gold) 30px 42px,transparent 42px),linear-gradient(180deg,#2fae74,#14693f);
+ box-shadow:0 6px 0 #0b4a2c,0 14px 26px #14693f66;transition:transform .1s,box-shadow .1s;animation:wishGlow 2.4s infinite ease-in-out}
+button.wish:before{content:"";position:absolute;left:0;right:0;top:0;height:100%;border-radius:18px;pointer-events:none;
+ background:radial-gradient(circle at 80% 22%,#ffffff22 0 3px,transparent 4px),radial-gradient(circle at 62% 78%,#ffffff1c 0 2px,transparent 3px),radial-gradient(circle at 92% 70%,#ffffff22 0 2px,transparent 3px)}
+button.wish:active{transform:translateY(4px);box-shadow:0 2px 0 #0b4a2c}
+button.wish .bow{position:absolute;left:19px;top:-20px;font-size:34px;line-height:1;filter:drop-shadow(0 3px 3px #0005);animation:bowBob 2.4s infinite ease-in-out}
+button.wish .wt{display:block;font-family:var(--serif);font-weight:800;font-size:22px;line-height:1.15;color:#fff6d6;text-shadow:0 2px 0 #0b4a2c}
+button.wish .ws{display:block;font-size:14px;font-weight:700;color:#e6f7ec;margin-top:3px}
+button.wish .new{position:absolute;top:-11px;right:14px;background:var(--red);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 10px;border-radius:999px;box-shadow:0 4px 10px #8e142055;border:2px solid #fff}
+@keyframes wishGlow{0%,100%{box-shadow:0 6px 0 #0b4a2c,0 14px 24px #14693f55}50%{box-shadow:0 6px 0 #0b4a2c,0 14px 34px #f6c45388}}
+@keyframes bowBob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) translateY(-2px)}}
+#wlAfter{margin:22px 0 14px}
+#wlBtn{margin-bottom:12px}
+.how .newline{color:var(--gold2);font-weight:800}
+/* fairy lights strung across the top of the main card */
+.lights{position:relative;display:flex;justify-content:space-between;margin:-10px -4px 14px;padding-top:2px}
+.lights:before{content:"";position:absolute;left:0;right:0;top:3px;height:10px;border-top:2px solid #2f4b3c;border-radius:50%}
+.lights i{position:relative;width:10px;height:15px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;margin-top:6px;animation:twinkle 1.8s infinite ease-in-out}
+.lights i:before{content:"";position:absolute;left:2px;top:-4px;width:6px;height:5px;border-radius:2px;background:#2f4b3c}
+.lights i:nth-child(4n+1){background:#ff4d5a;color:#ff4d5a}.lights i:nth-child(4n+2){background:#ffd24a;color:#ffd24a;animation-delay:-.45s}
+.lights i:nth-child(4n+3){background:#3fd68b;color:#3fd68b;animation-delay:-.9s}.lights i:nth-child(4n){background:#6cc6ff;color:#6cc6ff;animation-delay:-1.35s}
+@keyframes twinkle{0%,100%{opacity:1;box-shadow:0 0 10px 2px currentColor}50%{opacity:.45;box-shadow:0 0 2px 0 currentColor}}
+/* festive "new" note on the front screen */
+.wishnote{display:flex;gap:12px;align-items:center;margin:0 0 16px;padding:12px 14px;border-radius:16px;background:#fff;font-size:14px;font-weight:700;color:var(--pine2);
+ border:3px solid transparent;background:linear-gradient(#fff,#fff) padding-box,repeating-linear-gradient(135deg,var(--red) 0 8px,#fff 8px 16px) border-box}
+.wishnote .ic2{font-size:30px;line-height:1}
+.wishnote b{color:var(--red2)}
 .hi{font-family:var(--serif);font-size:20px;margin:16px 0 2px;color:var(--red2)}
 .pinwrap{position:relative;margin:10px 0 14px}
 .pinboxes{display:flex;gap:8px;justify-content:center}
@@ -175,11 +207,13 @@ textarea:focus{border-color:var(--gold)}
   <div class="banner hidden" id="oldBrowser">This page needs a newer browser. Tap the <b>⋯</b> menu at the top and choose <b>Open in browser</b> (or Open in Safari or Chrome), then try again.</div>
 
   <div class="card" id="entry">
+    <div class="lights" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="steps">
       <div class="step on" id="s1"><b>1</b>Your name</div><div class="bar2"><i id="p1"></i></div>
       <div class="step" id="s2"><b>2</b>Your PIN</div><div class="bar2"><i id="p2"></i></div>
       <div class="step" id="s3"><b>3</b>Unwrap</div>
     </div>
+    <div class="wishnote hidden" id="wishNote"><span class="ic2">🎄</span><span><b>New: wishlists!</b> Tap your name, type your PIN, then tap the green present to tell your Secret Santa what you'd love.</span></div>
     <h2>Who are you?</h2>
     <div class="hint" id="hint">👆 Tap your name to start</div>
     <div class="chips" id="chips"></div>
@@ -192,7 +226,8 @@ textarea:focus{border-color:var(--gold)}
         <input id="pin" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="6" aria-label="Your 6 digit PIN">
       </div>
       <button class="main" id="go">🎁 Unwrap my match</button>
-      <button class="ghost" id="wlBtn">✏️ Add or edit my own wishlist</button>
+      <div class="or" id="wlOr">or</div>
+      <button class="wish" id="wlBtn"><span class="bow">🎀</span><span class="new">NEW</span><span><span class="wt">🎄 Write my wishlist</span><span class="ws">Tell your Secret Santa what you'd love. Links work too.</span></span></button>
     </div>
     <div class="err" id="err"></div>
   </div>
@@ -215,6 +250,7 @@ textarea:focus{border-color:var(--gold)}
     <div id="wishes"></div>
     <div class="note">🤫 Keep it secret! This hides itself in <span id="count">45</span>s</div>
     <div class="ring"><div id="bar"></div></div>
+    <button class="wish hidden" id="wlAfter"><span class="bow">🎀</span><span><span class="wt">🎄 Now write your own wishlist</span><span class="ws">So your Secret Santa knows what you'd love</span></span></button>
     <button class="ghost" id="hide">Hide now</button>
   </div>
 
@@ -225,6 +261,7 @@ textarea:focus{border-color:var(--gold)}
       <li>Your PIN was sent to you privately. Don't share it.</li>
       <li>Nobody else can see your match without your PIN.</li>
       <li id="howKids">Kids can get a parent to open this for them.</li>
+      <li id="howWish" class="newline hidden">New: tap your name, type your PIN, then tap the green present, Write my wishlist. Only your Secret Santa will see it.</li>
     </ol>
   </div>
 </main>
@@ -346,9 +383,9 @@ function celebrate(){
 }
 
 // reveal
-var timer=null,TOTAL=45;
+var timer=null,TOTAL=45,last=null;
 function hide(){
-  clearInterval(timer);
+  clearInterval(timer);last=null;
   $('result').classList.remove('open');$('result').classList.add('hidden');$('entry').classList.remove('hidden');
   $('match').innerHTML='';$('wishes').innerHTML='';$('pin').value='';selId='';sel.value='';
   var chips=document.querySelectorAll('.chip');for(var i=0;i<chips.length;i++)chips[i].classList.remove('sel');
@@ -375,6 +412,7 @@ $('go').onclick=function(){
     [['💰 Budget',bud],['🎁 Style',CFG.style],['📅 Gifts',CFG.date]].forEach(function(kv){if(kv[1]){var s=document.createElement('span');s.className='tag';s.textContent=kv[0]+': '+kv[1];f.appendChild(s);}});
     $('entry').classList.add('hidden');$('result').classList.remove('hidden');
     var r=$('result');r.classList.remove('open');void r.offsetWidth;r.classList.add('open');
+    last={id:c.p.id,pin:c.pin};
     setStep(3);celebrate();window.scrollTo(0,0);
     var n=TOTAL;$('count').textContent=n;$('bar').style.width='100%';
     timer=setInterval(function(){n--;$('count').textContent=n;$('bar').style.width=(n/TOTAL*100)+'%';if(n<=0)hide();},1000);
@@ -474,7 +512,7 @@ $('wlCopy').onclick=function(){
   function fb(){var ta=$('wlTxt');ta.value=m;ta.focus();ta.select();try{document.execCommand('copy');done()}catch(e){btn.textContent='Select the text above and copy it'}}
   try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(m).then(done,fb);else fb();}catch(e){fb()}
 };
-if(SUPA){var hl=document.querySelector('.helplist'),li=document.createElement('li');li.innerHTML='<div class="ic">✏️</div><div><b>My own wishlist</b><span class="t">Type your PIN, then tap Add or edit my wishlist. Write a few ideas and save. Only your Secret Santa will see them.</span></div>';hl.insertBefore(li,hl.children[4]);}
+if(SUPA){var hl=document.querySelector('.helplist'),li=document.createElement('li');li.innerHTML='<div class="ic">✏️</div><div><b>My own wishlist</b><span class="t">Type your PIN, then tap the green present, Write my wishlist. You can also tap it straight after you unwrap your match. Write a few ideas and save. Only your Secret Santa will see them.</span></div>';hl.insertBefore(li,hl.children[4]);}
 
 if(!CFG.people.some(function(p){return p.g==='K'})){$('howFirst').textContent='Everyone draws one person from the family list. Partners never draw each other.';$('howKids').remove();}
 
@@ -486,7 +524,13 @@ if(!CFG.people.some(function(p){return p.g==='K'})){$('howFirst').textContent='E
   function shut(){sh.classList.add('hidden');}
   $('helpBtn').onclick=open;$('shut').onclick=shut;$('gotit').onclick=shut;$('sheetbg').onclick=shut;
 })();
-if(!SUPA)$('wlBtn').classList.add('hidden');
+if(!SUPA){$('wlBtn').classList.add('hidden');$('wlOr').classList.add('hidden');}
+else{$('wlAfter').classList.remove('hidden');$('howWish').classList.remove('hidden');$('wishNote').classList.remove('hidden');}
+// straight from the unwrap screen to your own wishlist, reusing the PIN just typed
+$('wlAfter').onclick=function(){
+  if(!last)return;var l=last;hide();
+  selId=l.id;sel.value=l.id;$('pin').value=l.pin;$('wlBtn').onclick();
+};
 // snow (3 depth layers)
 (function(){
   var c=$('snow'),x=c.getContext('2d'),w=0,h=0,fl=[],dpr=Math.min(window.devicePixelRatio||1,2);
