@@ -103,6 +103,17 @@ button.wish .new{position:absolute;top:-11px;right:14px;background:var(--red);co
 .wishnote b{color:var(--red2)}
 .hi{font-family:var(--serif);font-size:20px;margin:16px 0 2px;color:var(--red2)}
 .pinwrap{position:relative;margin:10px 0 14px}
+.remember{display:flex;align-items:center;gap:10px;margin:-2px 0 14px;padding:10px 12px;border-radius:14px;background:#f1faf4;border:2px solid #bfe3cd;cursor:pointer;font-size:15px;font-weight:800;color:var(--pine2)}
+.remember input{width:22px;height:22px;margin:0;accent-color:#1f9a63;flex:0 0 auto}
+.remember small{display:block;font-size:12px;font-weight:700;color:var(--mute)}
+.wb{margin:0 0 16px;padding:14px;border-radius:16px;background:linear-gradient(180deg,#2fae74,#14693f);color:#fff6d6;font-weight:800;font-size:16px;box-shadow:0 8px 18px #14693f44}
+.wb .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.wb #forget{flex:0 0 auto;font:inherit;font-size:13px;font-weight:800;padding:7px 11px;border-radius:999px;border:0;background:#ffffff26;color:#fff;cursor:pointer}
+.wb .acts{display:flex;gap:10px}
+.wb .acts button{flex:1;font:inherit;font-weight:800;font-size:16px;padding:13px 8px;border-radius:14px;border:0;cursor:pointer;transition:transform .1s}
+.wb .acts button:active{transform:translateY(3px)}
+.wb #wbGo{background:linear-gradient(180deg,#e63b47,var(--red2));color:#fff;box-shadow:0 4px 0 #5e0c15}
+.wb #wbWish{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2600;box-shadow:0 4px 0 #b5821a}
 .pinboxes{display:flex;gap:8px;justify-content:center}
 .pinboxes span{width:46px;height:58px;border-radius:14px;border:2px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--pine2);transition:all .2s}
 .pinboxes span.act{border-color:var(--gold);box-shadow:0 0 0 4px #f6c45344;transform:translateY(-2px)}
@@ -213,6 +224,7 @@ textarea:focus{border-color:var(--gold)}
       <div class="step" id="s2"><b>2</b>Your PIN</div><div class="bar2"><i id="p2"></i></div>
       <div class="step" id="s3"><b>3</b>Unwrap</div>
     </div>
+    <div class="wb hidden" id="wb"><div class="top"><span>🎄 Welcome back, <span id="wbName"></span>!</span><button type="button" id="forget">Not you? Forget me</button></div><div class="acts"><button type="button" id="wbGo">🎁 Unwrap</button><button type="button" id="wbWish">📝 My wishlist</button></div></div>
     <div class="wishnote hidden" id="wishNote"><span class="ic2">🎄</span><span><b>New: wishlists!</b> Tap your name, type your PIN, then tap the green present to tell your Secret Santa what you'd love.</span></div>
     <h2>Who are you?</h2>
     <div class="hint" id="hint">👆 Tap your name to start</div>
@@ -225,6 +237,7 @@ textarea:focus{border-color:var(--gold)}
         <div class="pinboxes" id="boxes"><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <input id="pin" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="6" aria-label="Your 6 digit PIN">
       </div>
+      <label class="remember"><input type="checkbox" id="rem" checked><span>Remember me on this phone<small>Untick this on a shared phone</small></span></label>
       <button class="main" id="go">🎁 Unwrap my match</button>
       <div class="or" id="wlOr">or</div>
       <button class="wish" id="wlBtn"><span class="bow">🎀</span><span class="new">NEW</span><span><span class="wt">🎄 Write my wishlist</span><span class="ws">Tell your Secret Santa what you'd love. Links work too.</span></span></button>
@@ -321,15 +334,29 @@ function setStep(n){
   [1,2,3].forEach(function(i){var e=$('s'+i);e.classList.toggle('on',i===n);e.classList.toggle('done',i<n);});
   $('p1').style.width=n>1?'100%':'0';$('p2').style.width=n>2?'100%':'0';
 }
-function choose(id){
+function choose(id,quiet){
+  if(selId&&selId!==id)$('pin').value='';
   selId=id;sel.value=id;$('err').textContent='';$('hint').style.display='none';
   var chips=document.querySelectorAll('.chip');
   for(var i=0;i<chips.length;i++)chips[i].classList.toggle('sel',chips[i].getAttribute('data-id')===id);
   var p=person();$('hi').textContent='Hi '+p.n+'! 👋';
   $('pinSec').classList.add('show');setStep(2);
-  setTimeout(function(){try{$('pin').focus()}catch(e){}},350);
+  if(!quiet)setTimeout(function(){try{$('pin').focus()}catch(e){}},350);
   paint();
 }
+// remember me: keeps this person's name and PIN on this phone only
+var REM='fss-remember';
+function memo(){try{return JSON.parse(localStorage.getItem(REM)||'null')}catch(e){return null}}
+function keep(c){try{if($('rem').checked)localStorage.setItem(REM,JSON.stringify({id:c.p.id,pin:c.pin}));else localStorage.removeItem(REM);}catch(e){}}
+function restore(){
+  var m=memo(),p=m&&CFG.people.filter(function(x){return x.id===m.id})[0];
+  if(!p||!/^\d{6}$/.test(m.pin||'')){$('wb').classList.add('hidden');return;}
+  choose(p.id,true);$('pin').value=m.pin;$('rem').checked=true;paint();
+  $('wbName').textContent=p.n;$('wb').classList.remove('hidden');$('wishNote').classList.add('hidden');
+}
+$('wbGo').onclick=function(){$('go').click();};
+$('wbWish').onclick=function(){$('wlBtn').click();};
+$('forget').onclick=function(){try{localStorage.removeItem(REM)}catch(e){}$('rem').checked=false;$('wb').classList.add('hidden');if(SUPA)$('wishNote').classList.remove('hidden');hide();};
 function person(){return CFG.people.filter(function(x){return x.id===selId})[0]}
 function paint(){
   var v=$('pin').value,sp=$('boxes').children;
@@ -390,7 +417,7 @@ function hide(){
   $('match').innerHTML='';$('wishes').innerHTML='';$('pin').value='';selId='';sel.value='';
   var chips=document.querySelectorAll('.chip');for(var i=0;i<chips.length;i++)chips[i].classList.remove('sel');
   $('pinSec').classList.remove('show');$('hint').style.display='';setStep(1);paint();
-  window.scrollTo(0,0);
+  restore();window.scrollTo(0,0);
 }
 $('hide').onclick=hide;
 $('go').onclick=function(){
@@ -412,7 +439,7 @@ $('go').onclick=function(){
     [['💰 Budget',bud],['🎁 Style',CFG.style],['📅 Gifts',CFG.date]].forEach(function(kv){if(kv[1]){var s=document.createElement('span');s.className='tag';s.textContent=kv[0]+': '+kv[1];f.appendChild(s);}});
     $('entry').classList.add('hidden');$('result').classList.remove('hidden');
     var r=$('result');r.classList.remove('open');void r.offsetWidth;r.classList.add('open');
-    last={id:c.p.id,pin:c.pin};
+    last={id:c.p.id,pin:c.pin};keep(c);
     setStep(3);celebrate();window.scrollTo(0,0);
     var n=TOTAL;$('count').textContent=n;$('bar').style.width='100%';
     timer=setInterval(function(){n--;$('count').textContent=n;$('bar').style.width=(n/TOTAL*100)+'%';if(n<=0)hide();},1000);
@@ -490,13 +517,14 @@ $('wlTxt').oninput=function(){wlUpdate();$('wlCopy').textContent=WL_LABEL;};
 $('wlBtn').onclick=function(){
   var c=check();if(!c)return;
   decrypt(c.p,c.pin,'2').then(function(txt){
+    keep(c);
     var o=JSON.parse(txt);own={k:o.k,r:o.r,t:o.t};
     $('wlWho').textContent=c.p.n;$('wlTxt').value=(o.w||[]).join('\n');wlUpdate();
     $('entry').classList.add('hidden');$('wlCard').classList.remove('hidden');window.scrollTo(0,0);
     if(SUPA&&own.r){getRow(own.r).then(function(ct){return ct?openWishes(own.k,ct):null;}).then(function(list){if(list&&!$('wlTxt').value)$('wlTxt').value=list.join('\n');}).catch(function(){});}
   }).catch(bad);
 };
-$('wlBack').onclick=function(){$('wlCard').classList.add('hidden');$('entry').classList.remove('hidden');$('wlCopy').textContent=WL_LABEL;own=null;$('wlTxt').value='';$('pin').value='';paint();};
+$('wlBack').onclick=function(){$('wlCard').classList.add('hidden');$('entry').classList.remove('hidden');$('wlCopy').textContent=WL_LABEL;own=null;$('wlTxt').value='';$('pin').value='';paint();restore();};
 $('wlCopy').onclick=function(){
   var btn=$('wlCopy');
   if(SUPA){
@@ -524,13 +552,14 @@ if(!CFG.people.some(function(p){return p.g==='K'})){$('howFirst').textContent='E
   function shut(){sh.classList.add('hidden');}
   $('helpBtn').onclick=open;$('shut').onclick=shut;$('gotit').onclick=shut;$('sheetbg').onclick=shut;
 })();
-if(!SUPA){$('wlBtn').classList.add('hidden');$('wlOr').classList.add('hidden');}
+if(!SUPA){$('wlBtn').classList.add('hidden');$('wlOr').classList.add('hidden');$('wbWish').classList.add('hidden');}
 else{$('wlAfter').classList.remove('hidden');$('howWish').classList.remove('hidden');$('wishNote').classList.remove('hidden');}
 // straight from the unwrap screen to your own wishlist, reusing the PIN just typed
 $('wlAfter').onclick=function(){
   if(!last)return;var l=last;hide();
   selId=l.id;sel.value=l.id;$('pin').value=l.pin;$('wlBtn').onclick();
 };
+restore();
 // snow (3 depth layers)
 (function(){
   var c=$('snow'),x=c.getContext('2d'),w=0,h=0,fl=[],dpr=Math.min(window.devicePixelRatio||1,2);
